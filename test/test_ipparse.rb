@@ -4,7 +4,8 @@ require 'test/unit'
 class TestIPParse < Test::Unit::TestCase
   def test_parse
     assert_equal IPParse.parse('222.153.3'),false
-    assert_not_equal IPParse.parse('222.15.153.3'),"UNKNOW"
+    assert_equal IPParse.parse('222.15.153.3'),"江西省云南市"
+    assert_equal IPParse.parse('24.38.192.2'),"美国"
   end
 
   def test_format
