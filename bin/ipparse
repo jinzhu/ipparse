@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+#
+# Copyright (c) 2009. GPL3.
+# Author: Zhang Jinzhu
+
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+
+require "ipparse"
+
+ARGV.map do |x|
+  result = IPParse.parse(x)
+  puts "%-20s => %s\e[0m" % [x,result ? "\e[33m#{result}" : "\e[31mInvalid IP(IPV4) Format"]
+end
