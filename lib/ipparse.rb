@@ -1,7 +1,7 @@
 # IPV4
 class IPParse
   def self.parse(ip)
-    return false unless ip =~ /(\d+\.){3}\d+/
+    return false unless ip.to_s =~ /(\d+\.){3}\d+/
     ip,addr = format(ip) , ''
 
     [ip.split('.')[0],'0'].each do |f|
