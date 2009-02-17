@@ -4,12 +4,14 @@ class IPParse
   def self.parse(ip)
     return false unless ip.to_s =~ /(\d+\.){3}\d+/
     ip,addr = format(ip) , ''
+    @data    ||= []
 
-    [ip.split('.')[0],'0'].each do |f|
-      f = File.join(File.dirname(__FILE__),'..','data',f+'.txt')
-      tmpip = (f =~ /0\.txt/ ? ip : ip[4,ip.length-1])
-      if File.exist?(f)
-        addr = dichotomizing(File.new(f).to_a,tmpip)
+    [ip[0,3].to_i,0].each do |f|
+      file       = "#{File.dirname(__FILE__)}/../data/#{f.to_s}.txt"
+      @data[f] ||= File.exist?(file) ? [File.new(file).to_a,(f == 0 ? ip : ip[4,ip.length])] : false
+
+      if @data[f]
+        addr = dichotomizing(@data[f][0],@data[f][1])
         return addr.strip if addr
       end
     end
@@ -29,7 +31,7 @@ class IPParse
   end
 
   def self.format(ip)
-    ip.to_s.gsub(/\*/,'255').split('.').inject([]) do |s,x|
+    ip.to_s.split('.').inject([]) do |s,x|
       s << [('%03s' % x).gsub(/ /,'0')]
     end.join('.')
   end
