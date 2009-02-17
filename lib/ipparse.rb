@@ -24,9 +24,9 @@ class IPParse
    cen = (arg.length/2).to_i
    x = arg[cen].split(/\s+/,3)
 
-   return (format(x[0])..format(x[1])).include?(ip) ? x[2] : false if arg.size == 1
-   return dichotomizing(arg[0...cen],ip)          if format(x[0]) > ip
-   return dichotomizing(arg[cen...arg.length],ip) if format(x[1]) < ip
+   return (x[0]..x[1]).include?(ip) ? x[2] : false if arg.size == 1
+   return dichotomizing(arg[0...cen],ip)          if x[0] > ip
+   return dichotomizing(arg[cen...arg.length],ip) if x[1] < ip
    return x[2]
   end
 

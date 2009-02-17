@@ -10,6 +10,5 @@ class TestIPParse < Test::Unit::TestCase
 
   def test_format
     assert_equal IPParse.format('12.3.4.23'),'012.003.004.023'
-    assert_equal IPParse.format('12.*.4.23'),'012.255.004.023'
   end
 end
