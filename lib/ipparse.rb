@@ -1,17 +1,18 @@
 $KCODE = 'UTF8'
 # IPV4
 class IPParse
+  @@data    ||= []
+
   def self.parse(ip)
     return false unless ip.to_s =~ /(\d+\.){3}\d+/
     ip,addr = format(ip) , ''
-    @data    ||= []
 
     [ip[0,3].to_i,0].each do |f|
-      file       = "#{File.dirname(__FILE__)}/../data/#{f.to_s}.txt"
-      @data[f] ||= File.exist?(file) ? [File.new(file).to_a,(f == 0 ? ip : ip[4,ip.length])] : false
+      file        = "#{File.dirname(__FILE__)}/../data/#{f.to_s}.txt"
+      @@data[f] ||= File.exist?(file) ? File.new(file).to_a : false
 
-      if @data[f]
-        addr = dichotomizing(@data[f][0],@data[f][1])
+      if @@data[f]
+        addr = dichotomizing(@@data[f],f == 0 ? ip : ip[4,ip.length])
         return addr.strip if addr
       end
     end
