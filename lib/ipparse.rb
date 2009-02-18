@@ -12,8 +12,8 @@ class IPParse
       @@data[f] ||= File.exist?(file) ? File.new(file).to_a : false
 
       if @@data[f]
-        addr = dichotomizing(@@data[f],f == 0 ? ip : ip[4,ip.length])
-        return addr.strip if addr
+        addr = dichotomizing(@@data[f],ip)
+        return addr if addr
       end
     end
 
@@ -22,21 +22,18 @@ class IPParse
 
   protected
   def self.dichotomizing(arg,ip)
-    size = arg.size
-    cen  = size/2
+    cen  = arg.size/2
+    cur  = arg[cen]
 
-    # '001.053.000.000 001.153.255.255 IANA' < '001.053.000.000' + '1'
-    # reduce 'string'.split call
-    return dichotomizing(arg[0...cen],ip)           if size != 1 && (arg[cen] > ip + '1')
-    x = arg[cen].split(/\s+/,3)
-    return (x[0]..x[1]).include?(ip) ? x[2] : false if size == 1
-    return dichotomizing(arg[cen...size],ip)        if x[1] < ip
-    return x[2]
+    return (cur[0,15]..cur[16,15]).include?(ip) ? cur[32...-1] : false  if cen == 0
+    return dichotomizing(arg[0...cen],ip)        if cur[0,15]  > ip
+    return dichotomizing(arg[cen..-1],ip)        if cur[16,15] < ip
+    return arg[cen][32...-1]
   end
 
   def self.format(ip)
     ip.to_s.split('.').inject([]) do |s,x|
-      s << [('%03s' % x).gsub(/ /,'0')]
+      s << x.rjust(3,'0')
     end.join('.')
   end
 end
