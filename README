@@ -1,6 +1,17 @@
 = IPParse
+== Install
+  $ sudo gem install ipparse
+
 == Usage
+  require 'rubygems'
+  require 'ipparse'
   IPParse.parse('218.58.88.175')
 
 == Shell
   $ ipparse 218.58.88.175 212.1.1.1 192.245.148.0 116.254.254.0
+
+
+Copyright (c) 2009  MIT-LICENSE
+Author : Jinzhu Zhang
+Web    : http://www.zhangjinzhu.com
+Email  : wosmvp (no-spam) gmail (no-spam) com
