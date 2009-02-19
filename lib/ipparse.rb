@@ -32,8 +32,6 @@ class IPParse
   end
 
   def self.format(ip)
-    ip.to_s.split('.').inject([]) do |s,x|
-      s << x.rjust(3,'0')
-    end.join('.')
+    ip.to_s.scan(/\d+/).map{|x| x.rjust(3, '0')}.join('.')
   end
 end
