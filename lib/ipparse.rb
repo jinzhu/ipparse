@@ -9,7 +9,7 @@ class IPParse
 
     [ip[0,3].to_i,0].each do |f|
       file        = "#{File.dirname(__FILE__)}/../data/#{f.to_s}.txt"
-      @@data[f] ||= File.exist?(file) ? File.new(file).to_a : false
+      @@data[f] ||= File.exist?(file) ? File.open(file){|m| m.to_a} : false
 
       if @@data[f]
         addr = dichotomizing(@@data[f],ip)
