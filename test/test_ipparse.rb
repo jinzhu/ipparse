@@ -18,8 +18,4 @@ class TestIPParse < Test::Unit::TestCase
     }
     ips.map {|k,v| assert_equal IPParse.parse(k),v}
   end
-
-  def test_format
-    assert_equal IPParse.format('12.3.4.23'),'012.003.004.023'
-  end
 end

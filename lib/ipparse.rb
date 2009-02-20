@@ -5,17 +5,9 @@ class IPParse
 
   def self.parse(ip)
     return false unless ip.to_s =~ /(\d+\.){3}\d+/
-    ip,addr = format(ip) , false
+    ip = ip.scan(/\d+/).map{|x| x.rjust(3, '0')}.join('.')
 
-    p = ip[0,3].to_i
-    @@data[p] ||= file_to_a("#{File.dirname(__FILE__)}/../data/#{p}.txt")
-    unless @@data[p].empty?
-      addr = dichotomizing(@@data[p],ip)
-      return addr if addr
-    end
-
-    @@data[0] ||= file_to_a("#{File.dirname(__FILE__)}/../data/0.txt")
-    return dichotomizing(@@data[0],ip) || "UNKNOW"
+    return dichotomizing(@@data[ip[0,3].to_i] ||= file_to_a("#{File.dirname(__FILE__)}/../data/#{ip[0,3].to_i}.txt"),ip) || dichotomizing(@@data[0] ||= file_to_a("#{File.dirname(__FILE__)}/../data/0.txt"),ip) || "Unknown"
   end
 
   protected
@@ -28,10 +20,6 @@ class IPParse
     return dichotomizing(arg[0...cen],ip)        if cur[0,15]  > ip
     return dichotomizing(arg[cen+1..-1],ip)      if cur[16,15] < ip
     return arg[cen][32...-1]
-  end
-
-  def self.format(ip)
-    ip.to_s.scan(/\d+/).map{|x| x.rjust(3, '0')}.join('.')
   end
 
   def self.file_to_a(f)
