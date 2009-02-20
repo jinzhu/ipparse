@@ -5,15 +5,17 @@ class IPParse
 
   def self.parse(ip)
     return false unless ip.to_s =~ /(\d+\.){3}\d+/
-    ip,addr = format(ip) , ''
+    ip,addr = format(ip) , false
 
-    [ip[0,3].to_i,0].each do |f|
-      @@data[f] ||= file_to_a("#{File.dirname(__FILE__)}/../data/#{f}.txt")
-      addr = dichotomizing(@@data[f],ip)
+    p = ip[0,3].to_i
+    @@data[p] ||= file_to_a("#{File.dirname(__FILE__)}/../data/#{p}.txt")
+    unless @@data[p].empty?
+      addr = dichotomizing(@@data[p],ip)
       return addr if addr
     end
 
-    return "UNKNOW"
+    @@data[0] ||= file_to_a("#{File.dirname(__FILE__)}/../data/0.txt")
+    return dichotomizing(@@data[0],ip) || "UNKNOW"
   end
 
   protected
