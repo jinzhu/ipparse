@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require File.join(File.dirname(__FILE__),"..","lib","ipparse.rb")
 require 'test/unit'
 
