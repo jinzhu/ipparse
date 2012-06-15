@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+# encoding=utf-8
 $KCODE = 'UTF8' if RUBY_VERSION < '1.9'
+
 # IPV4
 class IPParse
   @@data    ||= []

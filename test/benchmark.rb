@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require File.join(File.dirname(__FILE__),"..","lib","ipparse.rb")
+require File.expand_path(File.join(File.dirname(__FILE__),"..","lib","ipparse.rb"))
 require 'benchmark'
 
 ips = (1..100000).map { Array.new(4){|i| rand(255)}.join(".") }

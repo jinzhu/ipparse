@@ -1,26 +1,28 @@
-# IP Data from PHPWind
+# encoding=utf-8
+# IP Data from PHPWind (download it here: http://www.phpwind.com/index.php)
+
 system("find #{File.dirname(__FILE__)}/../data -iname '*txt' -exec dos2unix \{\} \\;")
 
 def format(ip)
   ip.to_s.gsub(/\*/,'255').scan(/\d+/).map{|x| x.rjust(3, '0')}.join('.')
 end
 
-file = Dir.new("#{File.dirname(__FILE__)}/../data").find.to_a.select {|x| x =~ /\w/}
+files = Dir.new("#{File.dirname(__FILE__)}/../data").find.to_a.select {|x| x =~ /\w/}
 
-file.map do |z|
-  currentfile = File.open("#{File.dirname(__FILE__)}/../data/#{z}") {|m| m.to_a}
-  prefix = (z =~ /^0\.txt$/ ? '' : z.split('.')[0].rjust(3,'0') + '.')
-  tmpfile = []
+files.map do |file|
+  file_content = File.read("#{File.dirname(__FILE__)}/../data/#{file}")
+  prefix = (file =~ /^0\.txt$/ ? '' : file.split('.')[0].rjust(3,'0') + '.')
+  tmpfile = ""
 
-  currentfile.each_with_index do |x,i|
+  file_content.split("\n").map do |x|
     next if x.strip.empty?
     x = x.split(/\s+/,3)
     x[0] = prefix + format(x[0])
     x[1] = prefix + format(x[1])
-    tmpfile << x.join("\s")
+    tmpfile << x.join("\s") + "\n"
   end
 
-  File.open("#{File.dirname(__FILE__)}/../data/#{z}",'w+') do |x|
+  File.open("#{File.dirname(__FILE__)}/../data/#{file}",'w+') do |x|
     x << tmpfile
   end
 end
